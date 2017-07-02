@@ -38,6 +38,7 @@ $(document).ready(function () {
       console.log("Clicked");
       if(this.checked) {
         document.getElementById("matchdaycustom").disabled = true;
+        $("#matchdaycustom").val("0");
       }
       else {
         document.getElementById("matchdaycustom").disabled = false;
