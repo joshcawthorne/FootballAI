@@ -36,13 +36,31 @@ function getScore() {
                         teamscore = results.rounds[i].matches[j].score1;
                         oppositionscore = results.rounds[i].matches[j].score2;
                         date = results.rounds[i].matches[j].date;
+
+                        document.getElementById("result").innerHTML = teamname + ' ' + teamscore + ' : ' + oppositionscore + ' ' + opposition;
+
+                     }
+                     else if(results.rounds[matchday].matches[j].team2.name == teamarray[team].name){
+                        teamname = results.rounds[i].matches[j].team2.name;
+                        teamekey = results.rounds[i].matches[j].team2.key;
+                        teamecode = results.rounds[i].matches[j].team2.code;
+
+                        opposition = results.rounds[i].matches[j].team1.name;
+                        oppositioncode = results.rounds[i].matches[j].team1.code;
+                        oppositionkey = results.rounds[i].matches[j].team1.key;
+
+                        teamscore = results.rounds[i].matches[j].score2;
+                        oppositionscore = results.rounds[i].matches[j].score1;
+                        date = results.rounds[i].matches[j].date;
+
+                        document.getElementById("result").innerHTML = opposition + ' ' + oppositionscore + ' : ' + teamscore + ' ' + teamname;
+
                      }
                 }
             }
         }
     console.log("All required successfully data gathered!")
 
-    document.getElementById("result").innerHTML = teamname + ' ' + teamscore + ' : ' + oppositionscore + ' ' + opposition;
 
   });
 }
