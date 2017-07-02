@@ -1,9 +1,3 @@
-$.getJSON("https://raw.githubusercontent.com/opendatajson/football.json/master/2015-16/en.1.clubs.json", function(results) {
-  document.getElementById("key").innerHTML= "Club Key: " + results.clubs[5].key;
-  document.getElementById("name").innerHTML= "Club Name: " + results.clubs[5].name;
-  document.getElementById("code").innerHTML= "Club Code: " + results.clubs[5].code;
-});
-
 var matchday = 1;
 var name = "Matchday " + matchday;
 
@@ -24,4 +18,14 @@ $.getJSON("https://raw.githubusercontent.com/opendatajson/football.json/master/2
   else {
       console.log("Therefore, " + results.rounds[4].matches[4].team2.name + " won the game.")
   }
+});
+
+/* -- Legacy Code -- */
+
+/* -- Code to get team name, key and code --
+
+$.getJSON("https://raw.githubusercontent.com/opendatajson/football.json/master/2015-16/en.1.clubs.json", function(results) {
+  document.getElementById("key").innerHTML= "Club Key: " + results.clubs[5].key;
+  document.getElementById("name").innerHTML= "Club Name: " + results.clubs[5].name;
+  document.getElementById("code").innerHTML= "Club Code: " + results.clubs[5].code;
 });
