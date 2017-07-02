@@ -5,7 +5,8 @@ var winners, losers = "";
 var date, teamname, teamekey, teamcode, opposition, oppositioncode, oppositionkey,  teamscore, oppositionscore;
 
 function getScore() {
-
+  document.getElementById("spinner").style.display = "block";
+  $('.spinner').show();
   var md = document.getElementById("matchdaycustom");
   var matchday = md.options[md.selectedIndex].value;
 
@@ -37,8 +38,11 @@ function getScore() {
                         oppositionscore = results.rounds[i].matches[j].score2;
                         date = results.rounds[i].matches[j].date;
 
-                        document.getElementById("result").innerHTML = teamname + ' ' + teamscore + ' : ' + oppositionscore + ' ' + opposition;
-
+                        setTimeout(displayResults, 2000);
+                        function displayResults() {
+                          $('.spinner').hide();
+                          document.getElementById("result").innerHTML = teamname + ' ' + teamscore + ' : ' + oppositionscore + ' ' + opposition;
+                        }
                      }
                      else if(results.rounds[matchday].matches[j].team2.name == teamarray[team].name){
                         teamname = results.rounds[i].matches[j].team2.name;
@@ -53,22 +57,25 @@ function getScore() {
                         oppositionscore = results.rounds[i].matches[j].score1;
                         date = results.rounds[i].matches[j].date;
 
-                        document.getElementById("result").innerHTML = opposition + ' ' + oppositionscore + ' : ' + teamscore + ' ' + teamname;
+                        setTimeout(displayResults, 2000);
+                        function displayResults() {
+                          $('.spinner').hide();
+                          document.getElementById("result").innerHTML = opposition + ' ' + oppositionscore + ' : ' + teamscore + ' ' + teamname;
+                        }
+
 
                      }
                 }
             }
         }
     console.log("All required successfully data gathered!")
-
-
   });
 }
 
 $(document).ready(function () {
+    $('.spinner').hide();
     document.getElementById("matchdaycustom").disabled = true;
     $(document).on('change', 'input[Id="chkproperty"]', function (e) {
-      console.log("Clicked");
       if(this.checked) {
         document.getElementById("matchdaycustom").disabled = true;
         $("#matchdaycustom").val("0");
