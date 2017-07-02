@@ -9,6 +9,7 @@
       src="https://code.jquery.com/jquery-3.2.1.js"
       integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE="
       crossorigin="anonymous">
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.4.2/css/bulma.css" />
     </script>
     <link href="https://fonts.googleapis.com/css?family=Montserrat:100,300,400,500,600,700,900" rel="stylesheet">
     <script src="js/script.js"></script>
@@ -16,5 +17,28 @@
   <body>
     <h1 id="title">The Football AI</h1>
     <p id="comingsoon">Content will be with you momentarily, please stand by.</p>
+
+    <div class="columns">
+      <div class="column is-half is-offset-one-quarter">
+        <div class="container">
+          <input type="checkbox" id="chkproperty" name="matchday" value="true" checked> Use live matchday stats<br>
+          <p>Matchday:
+            <select id="matchdaycustom">
+              <option value="0">1</option>
+              <option value="1">2</option>
+              <option value="2">3</option>
+              <option value="3">4</option>
+            </select>
+          </p>
+          <p>Team:
+            <select id="teamselect">
+              <option value="0">Arsenal</option>
+              <option value="1">Manchester United</option>
+            </select>
+          </p>
+          <button onclick="getScore();">Go</button>
+        </div>
+      </div>
+    </div>
   </body>
 </html>
