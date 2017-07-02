@@ -12,6 +12,10 @@ function getScore() {
   var tm = document.getElementById("teamselect");
   var team = tm.options[tm.selectedIndex].value;
 
+  console.log("team " + teamarray[team].name);
+
+  var teams = "Hull City";
+
   console.log ("Selected Team:  " + teamarray[team]);
   console.log ("Selected Matchday:  " + matchday);
 
@@ -21,17 +25,21 @@ function getScore() {
     console.log("Connected!");
     date = results.rounds[matchday].matches[matchday].date;
 
-    for(var i = 0; i < results.rounds.length; i++)
-    {
-      if(results.rounds[matchday].matches[i].team1.name == teamarray[team])
-      {
-        console.log(results.rounds[matchday].matches.team1.name);
-      }
-    }
+    for(var i = 0; i < results.rounds.length; i++){
+            if(i == matchday){
+                for (var j=0; j< results.rounds[matchday].matches.length; j++){
+                     if(results.rounds[matchday].matches[j].team1.name == teamarray[team].name){
+                        console.log(results.rounds[i].matches[j].team1.name);
+                        console.log(results.rounds[i].matches[j].date);
+                        console.log(results.rounds[i].matches[j].team2.name);
+                        console.log(results.rounds[i].matches[j].score1);
+                        console.log(results.rounds[i].matches[j].score2);
+                     }
+                  }
+            }
 
-    return results.rounds[matchday].find(item => {
-       return item.results.rounds[matchday].matches[i].team1.name == team;
-    })
+        }
+
     team = results.rounds[4].matches[4].team1.name;
     opposition = results.rounds[4].matches[4].team2.name;
     teamscore = results.rounds[4].matches[4].score1;
