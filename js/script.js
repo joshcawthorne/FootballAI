@@ -2,7 +2,7 @@ var matchday = 1;
 var name = "Matchday " + matchday;
 var winners, losers = "";
 
-var date, team, opposition, teamscore, oppositionscore;
+var date, teamname, teamekey, teamcode, opposition, oppositioncode, oppositionkey,  teamscore, oppositionscore;
 
 function getScore() {
 
@@ -12,11 +12,7 @@ function getScore() {
   var tm = document.getElementById("teamselect");
   var team = tm.options[tm.selectedIndex].value;
 
-  console.log("team " + teamarray[team].name);
-
-  var teams = "Hull City";
-
-  console.log ("Selected Team:  " + teamarray[team]);
+  console.log("Selected Team " + teamarray[team].name);
   console.log ("Selected Matchday:  " + matchday);
 
   console.log("Connecting...")
@@ -29,22 +25,25 @@ function getScore() {
             if(i == matchday){
                 for (var j=0; j< results.rounds[matchday].matches.length; j++){
                      if(results.rounds[matchday].matches[j].team1.name == teamarray[team].name){
-                        console.log(results.rounds[i].matches[j].team1.name);
-                        console.log(results.rounds[i].matches[j].date);
-                        console.log(results.rounds[i].matches[j].team2.name);
-                        console.log(results.rounds[i].matches[j].score1);
-                        console.log(results.rounds[i].matches[j].score2);
+                        teamname = results.rounds[i].matches[j].team1.name;
+                        teamekey = results.rounds[i].matches[j].team1.key;
+                        teamecode = results.rounds[i].matches[j].team1.code;
+
+                        opposition = results.rounds[i].matches[j].team2.name;
+                        oppositioncode = results.rounds[i].matches[j].team2.code;
+                        oppositionkey = results.rounds[i].matches[j].team2.key;
+
+                        teamscore = results.rounds[i].matches[j].score1;
+                        oppositionscore = results.rounds[i].matches[j].score2;
+                        date = results.rounds[i].matches[j].date;
                      }
-                  }
+                }
             }
-
         }
-
-    team = results.rounds[4].matches[4].team1.name;
-    opposition = results.rounds[4].matches[4].team2.name;
-    teamscore = results.rounds[4].matches[4].score1;
-    opposition = results.rounds[4].matches[4].score2;
     console.log("All required successfully data gathered!")
+
+    document.getElementById("result").innerHTML = teamname + ' ' + teamscore + ' : ' + oppositionscore + ' ' + opposition;
+
   });
 }
 

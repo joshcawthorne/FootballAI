@@ -2,6 +2,8 @@
 
 var teamarray = [
   {"name": "Arsenal", "code": "ARS", "key": "arsenal"},
+  {"name": "Bournemouth", "code": "BOR", "key": "bournemouth"},
+  {"name": "Burnley", "code": "BUR", "key": "burnley"},
   {"name": "Chelsea", "code": "CHE", "key": "chelsea"},
 ]
 

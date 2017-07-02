@@ -22,7 +22,7 @@
     <div class="columns">
       <div class="column is-half is-offset-one-quarter">
         <div class="container">
-          <input type="checkbox" id="chkproperty" name="matchday" value="true" checked> Use live matchday stats<br>
+          <label><input type="checkbox" id="chkproperty" name="matchday" value="true" checked> Use live matchday stats</label><br>
           <p>Matchday:
             <select id="matchdaycustom">
               <option value="0">1</option>
@@ -41,6 +41,11 @@
           </p>
           <button onclick="getScore();">Go</button>
           <button onclick="testArray();">Test Array</button>
+
+          <br>
+
+          <h4 id="result"></h4>
+
         </div>
       </div>
     </div>
