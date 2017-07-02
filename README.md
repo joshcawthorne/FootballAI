@@ -10,4 +10,4 @@ A smart AI for creating football-based tweets dependent on team form, score and 
 - Dynamic  Formidability Rating
 - Tracking Formidability Rating to gauge performance (like stocks and shares)
 - Attributing performance change to real-world events
-- 
+- Visualised graphs for each team leading to a 'Financial Times' type overview for each team as a type of security...
