@@ -1,4 +1,4 @@
-var date, teamekey, teamcode, opposition, oppositioncode, oppositionkey, teamscore, oppositionscore, nextgame, teamhash, homelocation, nextgamehomelocation, gameresult, winners, losers;
+var date, teamekey, teamcode, opposition, oppositioncode, oppositionkey, teamscore, oppositionscore, nextgame, teamhash, homelocation, nextgamehomelocation, gameresult, winners, losers, nextteamname;
 var matchday = 1;
 var name = "Matchday " + matchday;
 var teamname = "Arsenal";
@@ -119,13 +119,13 @@ function tweetLogic() {
                 for (var j=0; j< results.rounds[nextgameconv].matches.length; j++){
                      if(results.rounds[nextgameconv].matches[j].team1.name == teamarray[team].name){
                         var nextgamestring = results.rounds[i].matches[j].team2.key;
-                        nextgame = nextgamestring.charAt(0).toUpperCase() + nextgamestring.slice(1);
+                        nextteamname = nextgamestring.charAt(0).toUpperCase() + nextgamestring.slice(1);
                         nextgamehomelocation = true;
                         console.log("Next game is against" + nextgame + ", at home.");
                      }
                      else if(results.rounds[nextgameconv].matches[j].team2.name == teamarray[team].name){
                         var nextgamestring = results.rounds[i].matches[j].team1.key;
-                        nextgame = nextgamestring.charAt(0).toUpperCase() + nextgamestring.slice(1);
+                        nextteamname = nextgamestring.charAt(0).toUpperCase() + nextgamestring.slice(1);
                         nextgamehomelocation = false;
                         console.log("Next game is against " + nextgame + ", away from home.");
                     }
@@ -319,8 +319,8 @@ function buildTweet() {
             console.log("Next game is to be played away.")
           }
       }
-  document.getElementById("tweet").innerHTML = victoryTweets[0] + nextgame + "! " + teamhash;
-  document.getElementById("tweet").innerHTML = drawTweets[0] + nextgame + " " + teamhash;
-  document.getElementById("tweet").innerHTML = lossTweets[0] + nextgame + ". " + teamhash;
+  document.getElementById("tweet").innerHTML = victoryTweets[0] + nextteamname + "! " + teamhash;
+  document.getElementById("tweet").innerHTML = drawTweets[0] + nextteamname + " " + teamhash;
+  document.getElementById("tweet").innerHTML = lossTweets[0] + nextteamname + ". " + teamhash;
   });
 }}
