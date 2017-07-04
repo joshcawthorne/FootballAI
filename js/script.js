@@ -2,7 +2,8 @@ var matchday = 1;
 var name = "Matchday " + matchday;
 var winners, losers = "";
 
-var date, teamname, teamekey, teamcode, opposition, oppositioncode, oppositionkey, teamscore, oppositionscore, nextgame, teamhash;
+var date, teamekey, teamcode, opposition, oppositioncode, oppositionkey, teamscore, oppositionscore, nextgame, teamhash, homelocation, nextgamehomelocation;
+var teamname = "Arsenal";
 
 //Get Score for team
 function getScore() {
@@ -15,9 +16,10 @@ function getScore() {
   var team = tm.options[tm.selectedIndex].value;
 
   console.log("Selected Team " + teamarray[team].name);
-  console.log ("Selected Matchday:  " + matchday);
+  console.log ("Selected Matchday: " + matchday);
 
   console.log("Connecting...")
+  console.log("Reason: Base data dump.")
 
   $.getJSON("https://raw.githubusercontent.com/opendatajson/football.json/master/2016-17/en.1.json", function(results) {
     console.log("Connected!");
@@ -40,6 +42,8 @@ function getScore() {
                         oppositionscore = results.rounds[i].matches[j].score2;
                         date = results.rounds[i].matches[j].date;
 
+                        homelocation = true;
+
                         setTimeout(displayResults, 2000);
                         function displayResults() {
                           $('.spinner').hide();
@@ -60,6 +64,8 @@ function getScore() {
                         teamscore = results.rounds[i].matches[j].score2;
                         oppositionscore = results.rounds[i].matches[j].score1;
                         date = results.rounds[i].matches[j].date;
+
+                        homelocation = false;
 
                         setTimeout(displayResults, 2000);
                         function displayResults() {
@@ -100,6 +106,7 @@ $(document).ready(function () {
 //Tweet Logic
 function tweetLogic() {
   console.log("Connecting...")
+  console.log("Reason: Next game info")
   $.getJSON("https://raw.githubusercontent.com/opendatajson/football.json/master/2016-17/en.1.json", function(results) {
     console.log("Connected!");
     var md = document.getElementById("matchdaycustom");
@@ -108,19 +115,26 @@ function tweetLogic() {
     var tm = document.getElementById("teamselect");
     var team = tm.options[tm.selectedIndex].value;
 
-    var nextgameno = matchday ++;
+    var number = parseInt(matchday.substring(matchday) , 10 ) + 1;
+    var nextgameno = number + 1;
+    console.log("Next Game: " + nextgameno);
+
+    console.log("Next Matchday: " + nextgameno);
     for(var i = 0; i < results.rounds.length; i++){
-            if(i == matchday){
+            if(i == nextgameno){
                 for (var j=0; j< results.rounds[nextgameno].matches.length; j++){
                      if(results.rounds[nextgameno].matches[j].team1.name == teamarray[team].name){
                         var nextgamestring = results.rounds[i].matches[j].team2.key;
-                        console.log("Here: " + nextgamestring);
                         nextgame = nextgamestring.charAt(0).toUpperCase() + nextgamestring.slice(1);
-                        console.log(nextgame);
+                        nextgamehomelocation = true;
+                        console.log("Next game is against" + nextgame + ", at home.");
                      }
                      else if(results.rounds[nextgameno].matches[j].team2.name == teamarray[team].name){
                         var nextgamestring = results.rounds[i].matches[j].team1.key;
                         nextgame = nextgamestring.charAt(0).toUpperCase() + nextgamestring.slice(1);
+                        nextgamehomelocation = false;
+                        console.log("Next game is against " + nextgame + ", away from home.");
+
                       }
                  }
             }
@@ -131,19 +145,155 @@ function tweetLogic() {
 }
 
 function buildTweet() {
-  console.log(nextgame);
-
   if(teamscore > oppositionscore) {
     result = 1;
-    document.getElementById("tweet").innerHTML = victoryTweets[0] + nextgame + "! " + teamhash;
   } else if(teamscore == oppositionscore) {
     result = 2;
-    document.getElementById("tweet").innerHTML = drawTweets[0] + nextgame + " " + teamhash;
   } else {
     result = 3;
-    document.getElementById("tweet").innerHTML = lossTweets[0] + nextgame + ". " + teamhash;
   }
-}
+
+  if(matchday == 3 || matchday > 3) {
+    newseason = true;
+  }
+  else {
+    newseason = false;
+  }
+
+  if(!newseason) {
+    console.log("Connecting...")
+    console.log("Reason: Past results info.")
+    $.getJSON("https://raw.githubusercontent.com/opendatajson/football.json/master/2016-17/en.1.json", function(results) {
+      console.log("Connected!");
+
+      var md = document.getElementById("matchdaycustom");
+      var matchday = md.options[md.selectedIndex].value;
+      var tm = document.getElementById("teamselect");
+      var team = tm.options[tm.selectedIndex].value;
+
+      var number = parseInt(matchday.substring(matchday) , 10 ) + 1;
+      var game1 = number - 1;
+      console.log(game1);
+      var game2 = number - 2;
+      var game3 = number - 3;
+      var loss = 0;
+      var draw = 0;
+      var win = 0;
+
+      if(matchday > 3) {
+        for(var i = 0; i < results.rounds.length; i++){
+                if(i == game1){
+                    for (var j=0; j< results.rounds[game1].matches.length; j++){
+                         if(results.rounds[game1].matches[j].team1.name == teamarray[team].name){
+                            var homeresult = results.rounds[i].matches[j].score1;
+                            var opporesult = results.rounds[i].matches[j].score2;
+                            console.log(homeresult + " " + opporesult);
+                            if (homeresult > opporesult) {
+                              win ++;
+                            }
+                            else if(homeresult == opporesult){
+                              draw ++;
+                            }
+                            else{
+                              loss ++;
+                            }
+                         }
+                         else if(results.rounds[game1].matches[j].team2.name == teamarray[team].name){
+                            var homeresult = results.rounds[i].matches[j].score2;
+                            var opporesult = results.rounds[i].matches[j].score1;
+                            console.log(homeresult + " " + opporesult);
+                            if (homeresult > opporesult) {
+                              win ++;
+                            }
+                            else if(homeresult == opporesult){
+                              draw ++;
+                            }
+                            else{
+                              loss ++;
+                            }
+                          }
+                     }
+                }
+          }
+          console.log("Game one before data gathered...")
+          console.log("Wins: " + win + " Draws: " + draw + " Losses: "+ loss);
+
+        /*for(var i = 0; i < results.rounds.length; i++){
+                if(i == game2){
+                  for (var j=0; j< results.rounds[game2].matches.length; j++){
+                       if(results.rounds[game2].matches[j].team1.name == teamarray[team].name){
+                          var homeresult = results.rounds[i].matches[j].score1;
+                          var opporesult = results.rounds[i].matches[j].score2;
+                          if (homeresult > opporesult) {
+                            win ++;
+                          }
+                          else if(homeresult == opporesult){
+                            draw ++;
+                          }
+                          else{
+                            loss ++;
+                          }
+                       }
+                       else if(results.rounds[game2].matches[j].team2.name == teamarray[team].name){
+                          var homeresult = results.rounds[i].matches[j].score2;
+                          var opporesult = results.rounds[i].matches[j].score1;
+                          if (homeresult > opporesult) {
+                            win ++;
+                          }
+                          else if(homeresult == opporesult){
+                            draw ++;
+                          }
+                          else{
+                            loss ++;
+                          }
+                        }
+                }
+          }
+          console.log("Game two before data gathered...")
+        }
+
+        for(var i = 0; i < results.rounds.length; i++){
+                if(i == game3){
+                  for (var j=0; j< results.rounds[game3].matches.length; j++){
+                       if(results.rounds[game3].matches[j].team1.name == teamarray[team].name){
+                          var homeresult = results.rounds[i].matches[j].score1;
+                          var opporesult = results.rounds[i].matches[j].score2;
+                          if (homeresult > opporesult) {
+                            win ++;
+                          }
+                          else if(homeresult == opporesult){
+                            draw ++;
+                          }
+                          else{
+                            loss ++;
+                          }
+                       }
+                       else if(results.rounds[game3].matches[j].team2.name == teamarray[team].name){
+                          var homeresult = results.rounds[i].matches[j].score2;
+                          var opporesult = results.rounds[i].matches[j].score1;
+                          if (homeresult > opporesult) {
+                            win ++;
+                          }
+                          else if(homeresult == opporesult){
+                            draw++;
+                          }
+                          else{
+                            loss++;
+                          }
+                        }
+                }
+          }
+        console.log("Game three before data gathered...")
+        console.log("Analysing results...")
+        console.log("Wins: " + win + " Draws: " + draw + " Losses: "+ loss);
+      }*/
+      }
+
+  document.getElementById("tweet").innerHTML = victoryTweets[0] + nextgame + "! " + teamhash;
+  document.getElementById("tweet").innerHTML = drawTweets[0] + nextgame + " " + teamhash;
+  document.getElementById("tweet").innerHTML = lossTweets[0] + nextgame + ". " + teamhash;
+  });
+}}
 
 
 /* -- Legacy Code -- */
