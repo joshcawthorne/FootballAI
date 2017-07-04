@@ -49,6 +49,10 @@ button {
   margin-bottom: 15px
 }
 
+.result {
+	display: none;
+}
+
 .spinner {
   margin: 10px auto;
   width: 50px;

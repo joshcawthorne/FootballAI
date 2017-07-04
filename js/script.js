@@ -2,8 +2,9 @@ var matchday = 1;
 var name = "Matchday " + matchday;
 var winners, losers = "";
 
-var date, teamname, teamekey, teamcode, opposition, oppositioncode, oppositionkey,  teamscore, oppositionscore;
+var date, teamname, teamekey, teamcode, opposition, oppositioncode, oppositionkey, teamscore, oppositionscore, nextgame, teamhash;
 
+//Get Score for team
 function getScore() {
   document.getElementById("spinner").style.display = "block";
   $('.spinner').show();
@@ -29,6 +30,7 @@ function getScore() {
                         teamname = results.rounds[i].matches[j].team1.name;
                         teamekey = results.rounds[i].matches[j].team1.key;
                         teamecode = results.rounds[i].matches[j].team1.code;
+                        teamhash = "#" + results.rounds[i].matches[j].team1.code;
 
                         opposition = results.rounds[i].matches[j].team2.name;
                         oppositioncode = results.rounds[i].matches[j].team2.code;
@@ -42,12 +44,14 @@ function getScore() {
                         function displayResults() {
                           $('.spinner').hide();
                           document.getElementById("result").innerHTML = teamname + ' ' + teamscore + ' : ' + oppositionscore + ' ' + opposition;
+                          document.getElementById('resultContainer').style.display = 'block';
                         }
                      }
                      else if(results.rounds[matchday].matches[j].team2.name == teamarray[team].name){
                         teamname = results.rounds[i].matches[j].team2.name;
                         teamekey = results.rounds[i].matches[j].team2.key;
                         teamecode = results.rounds[i].matches[j].team2.code;
+                        teamhash = "#" + results.rounds[i].matches[j].team2.code;
 
                         opposition = results.rounds[i].matches[j].team1.name;
                         oppositioncode = results.rounds[i].matches[j].team1.code;
@@ -61,6 +65,7 @@ function getScore() {
                         function displayResults() {
                           $('.spinner').hide();
                           document.getElementById("result").innerHTML = opposition + ' ' + oppositionscore + ' : ' + teamscore + ' ' + teamname;
+                          document.getElementById('resultContainer').style.display = 'block';
                         }
 
 
@@ -72,6 +77,7 @@ function getScore() {
   });
 }
 
+//Create Loading Icon
 $(document).ready(function () {
     $('.spinner').hide();
     document.getElementById("matchdaycustom").disabled = true;
@@ -84,7 +90,60 @@ $(document).ready(function () {
         document.getElementById("matchdaycustom").disabled = false;
       }
     })
+    $('select').on('change', function (e) {
+      document.getElementById('resultContainer').style.display = 'none';
+      document.getElementById("tweet").innerHTML = " ";
+
+    });
 });
+
+//Tweet Logic
+function tweetLogic() {
+  console.log("Connecting...")
+  $.getJSON("https://raw.githubusercontent.com/opendatajson/football.json/master/2016-17/en.1.json", function(results) {
+    console.log("Connected!");
+    var md = document.getElementById("matchdaycustom");
+    var matchday = md.options[md.selectedIndex].value;
+
+    var tm = document.getElementById("teamselect");
+    var team = tm.options[tm.selectedIndex].value;
+
+    var nextgameno = matchday ++;
+    for(var i = 0; i < results.rounds.length; i++){
+            if(i == matchday){
+                for (var j=0; j< results.rounds[nextgameno].matches.length; j++){
+                     if(results.rounds[nextgameno].matches[j].team1.name == teamarray[team].name){
+                        var nextgamestring = results.rounds[i].matches[j].team2.key;
+                        console.log("Here: " + nextgamestring);
+                        nextgame = nextgamestring.charAt(0).toUpperCase() + nextgamestring.slice(1);
+                        console.log(nextgame);
+                     }
+                     else if(results.rounds[nextgameno].matches[j].team2.name == teamarray[team].name){
+                        var nextgamestring = results.rounds[i].matches[j].team1.key;
+                        nextgame = nextgamestring.charAt(0).toUpperCase() + nextgamestring.slice(1);
+                      }
+                 }
+            }
+      }
+      console.log("All required successfully data gathered!")
+      buildTweet();
+    })
+}
+
+function buildTweet() {
+  console.log(nextgame);
+
+  if(teamscore > oppositionscore) {
+    result = 1;
+    document.getElementById("tweet").innerHTML = victoryTweets[0] + nextgame + "! " + teamhash;
+  } else if(teamscore == oppositionscore) {
+    result = 2;
+    document.getElementById("tweet").innerHTML = drawTweets[0] + nextgame + " " + teamhash;
+  } else {
+    result = 3;
+    document.getElementById("tweet").innerHTML = lossTweets[0] + nextgame + ". " + teamhash;
+  }
+}
 
 
 /* -- Legacy Code -- */
