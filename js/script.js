@@ -114,9 +114,8 @@ function tweetLogic() {
 
     var tm = document.getElementById("teamselect");
     var team = tm.options[tm.selectedIndex].value;
-
     var number = parseInt(matchday.substring(matchday) , 10 ) + 1;
-    var nextgameno = number + 1;
+    var nextgameno = number;
     console.log("Next Game: " + nextgameno);
 
     console.log("Next Matchday: " + nextgameno);
