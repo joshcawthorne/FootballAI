@@ -29,5 +29,5 @@ var drawTweets = [
 ]
 
 var lossTweets = [
-  "Dissapointing to come away with a loss there. On to the next game at "
+  "Disappointing to come away with a loss there. On to the next game "
 ]

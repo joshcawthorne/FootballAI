@@ -1,5 +1,6 @@
 var date, teamekey, teamcode, opposition, oppositioncode, oppositionkey, teamscore, oppositionscore, nextgame, teamhash, homelocation, nextgamehomelocation, gameresult, winners, losers, nextteamname;
 var matchday = 1;
+var nextgamecomment = true;
 var name = "Matchday " + matchday;
 var teamname = "Arsenal";
 
@@ -121,16 +122,18 @@ function tweetLogic() {
                         var nextgamestring = results.rounds[i].matches[j].team2.key;
                         nextteamname = nextgamestring.charAt(0).toUpperCase() + nextgamestring.slice(1);
                         nextgamehomelocation = true;
-                        console.log("Next game is against" + nextgame + ", at home.");
+                        console.log("Next game is against" + nextteamname + ", at home.");
                      }
                      else if(results.rounds[nextgameconv].matches[j].team2.name == teamarray[team].name){
                         var nextgamestring = results.rounds[i].matches[j].team1.key;
                         nextteamname = nextgamestring.charAt(0).toUpperCase() + nextgamestring.slice(1);
                         nextgamehomelocation = false;
-                        console.log("Next game is against " + nextgame + ", away from home.");
+                        console.log("Next game is against " + nextteamname + ", away from home.");
+                        nextgamecomment = true;
                     }
                 }
            }
+           else(nextgamecomment = false);
       }
       console.log("All required successfully data gathered!")
       console.log("Disconnected.")
@@ -318,9 +321,23 @@ function buildTweet() {
           } else {
             console.log("Next game is to be played away.")
           }
+          console.log("Game result: " + gameresult);
       }
-  document.getElementById("tweet").innerHTML = victoryTweets[0] + nextteamname + "! " + teamhash;
-  document.getElementById("tweet").innerHTML = drawTweets[0] + nextteamname + " " + teamhash;
-  document.getElementById("tweet").innerHTML = lossTweets[0] + nextteamname + ". " + teamhash;
+
+      if(result == 1 && nextgamecomment == true) {
+        document.getElementById("tweet").innerHTML = victoryTweets[0] + nextteamname + "! " + teamhash;
+      } else if(result == 2 && nextgamecomment == true) {
+        document.getElementById("tweet").innerHTML = drawTweets[0] + nextteamname + " " + teamhash;
+      } else if(result == 3 && nextgamecomment == true)  {
+        document.getElementById("tweet").innerHTML = lossTweets[0] + "at " + nextteamname + ". " + teamhash;
+      }
+
+      else if(result == 1 && nextgamecomment == false) {
+        document.getElementById("tweet").innerHTML = victoryTweets[0] + "the next game! " + teamhash;
+      } else if(result == 2 && nextgamecomment == false) {
+        document.getElementById("tweet").innerHTML = drawTweets[0] + " the next game." + teamhash;
+      } else if(result == 3 && nextgamecomment == false)  {
+        document.getElementById("tweet").innerHTML = lossTweets[0] + ". " + teamhash;
+      }
   });
 }}
