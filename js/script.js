@@ -180,7 +180,7 @@ function buildTweet() {
       var draw = 0;
       var win = 0;
 
-      if(matchday > 3) {
+      if(matchday > 2) {
         for(var i = 0; i < results.rounds.length; i++){
                 if(i == game1){
                     for (var j=0; j< results.rounds[game1].matches.length; j++){
