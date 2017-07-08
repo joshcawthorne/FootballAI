@@ -7,34 +7,37 @@ var teamname = "Arsenal";
 //Tasks to perform instantly
 $(document).ready(function () {
     $('.spinner').hide();
-    document.getElementById("matchdaycustom").disabled = true;
+    $('.result').hide();
+    $('.tweet').hide();
+    /*document.getElementById("matchdaycustom").disabled = true;
     $(document).on('change', 'input[Id="chkproperty"]', function (e) {
       if(this.checked) {
         document.getElementById("matchdaycustom").disabled = true;
-        $("#matchdaycustom").val("0");
+        $("#matchdaycustom").val("6");
+        document.getElementById("warning").innerHTML = " ";
       }
       else {
         document.getElementById("matchdaycustom").disabled = false;
+        document.getElementById("warning").innerHTML = "Please note: For full functionality, please use matchdays 4-7.";
       }
-    })
+    })*/
     $('select').on('change', function (e) {
       document.getElementById('resultContainer').style.display = 'none';
       document.getElementById("tweet").innerHTML = " ";
-
     });
 });
 
 //Get Score for team
 function getScore() {
-  document.getElementById("spinner").style.display = "block";
   $('.spinner').show();
+  document.getElementById('searchfield').className += ' animated fadeOut';
 
-  var md = document.getElementById("matchdaycustom");
-  var matchday = md.options[md.selectedIndex].value;
-  var tm = document.getElementById("teamselect");
-  var team = tm.options[tm.selectedIndex].value;
+  //var md = document.getElementById("matchdaycustom");
+  var matchday = 6;
+  //var tm = document.getElementById("teamselect");
 
-  console.log("Selected Team " + teamarray[team].name);
+  var team = document.getElementById("autocomplete").value;
+  console.log("Selected Team: " + team);
   console.log ("Selected Matchday: " + matchday);
 
   console.log("Connecting...");
@@ -45,7 +48,7 @@ function getScore() {
     for(var i = 0; i < results.rounds.length; i++){
             if(i == matchday){
                 for (var j=0; j< results.rounds[matchday].matches.length; j++){
-                     if(results.rounds[matchday].matches[j].team1.name == teamarray[team].name){
+                     if(results.rounds[matchday].matches[j].team1.name == team){
                         teamname = results.rounds[i].matches[j].team1.name;
                         teamekey = results.rounds[i].matches[j].team1.key;
                         teamecode = results.rounds[i].matches[j].team1.code;
@@ -65,10 +68,10 @@ function getScore() {
                         function displayResults() {
                           $('.spinner').hide();
                           document.getElementById("result").innerHTML = teamname + ' ' + teamscore + ' : ' + oppositionscore + ' ' + opposition;
-                          document.getElementById('resultContainer').style.display = 'block';
+                          $('.tweet').show();
                         }
                      }
-                     else if(results.rounds[matchday].matches[j].team2.name == teamarray[team].name){
+                     else if(results.rounds[matchday].matches[j].team2.name == team){
                         teamname = results.rounds[i].matches[j].team2.name;
                         teamekey = results.rounds[i].matches[j].team2.key;
                         teamecode = results.rounds[i].matches[j].team2.code;
@@ -88,7 +91,7 @@ function getScore() {
                         function displayResults() {
                           $('.spinner').hide();
                           document.getElementById("result").innerHTML = opposition + ' ' + oppositionscore + ' : ' + teamscore + ' ' + teamname;
-                          document.getElementById('resultContainer').style.display = 'block';
+                          document.getElementById('tweet').style.display = 'block';
                         }
                      }
                 }
@@ -96,6 +99,9 @@ function getScore() {
         }
     console.log("All required successfully data gathered!")
     console.log("Disconnected.")
+    $('.result').show();
+    $('.Tweet').show();
+    tweetLogic();
   });
 }
 
@@ -106,10 +112,10 @@ function tweetLogic() {
   $.getJSON("https://raw.githubusercontent.com/opendatajson/football.json/master/2016-17/en.1.json", function(results) {
     console.log("Connected!");
 
-    var md = document.getElementById("matchdaycustom");
-    var matchday = md.options[md.selectedIndex].value;
-    var tm = document.getElementById("teamselect");
-    var team = tm.options[tm.selectedIndex].value;
+    //var md = document.getElementById("matchdaycustom");
+    var matchday = "06";
+    //var tm = document.getElementById("autocomplete").value;
+    var team = document.getElementById("autocomplete").value;
     var nextgameno = matchday + 1;
     var nextgameremove = nextgameno.replace(/^0+/, '');
     var nextgame = parseInt(nextgameno, 10);
@@ -138,6 +144,7 @@ function tweetLogic() {
       console.log("All required successfully data gathered!")
       console.log("Disconnected.")
       buildTweet();
+      $('.result').show();
     })
 }
 
@@ -166,10 +173,10 @@ function buildTweet() {
     $.getJSON("https://raw.githubusercontent.com/opendatajson/football.json/master/2016-17/en.1.json", function(results) {
       console.log("Connected!");
 
-      var md = document.getElementById("matchdaycustom");
-      var matchday = md.options[md.selectedIndex].value;
-      var tm = document.getElementById("teamselect");
-      var team = tm.options[tm.selectedIndex].value;
+      //var md = document.getElementById("matchdaycustom");
+      var matchday = "06"
+      //var tm = document.getElementById("teamselect");
+      var team = document.getElementById("autocomplete").value;
       var nextgameremove1 = matchday.replace(/^0+/, '');
       var nextgame1 = parseInt(nextgameremove1, 10) - 1;
       var game1 = nextgame1.toString();
@@ -198,7 +205,7 @@ function buildTweet() {
         for(var i = 0; i < results.rounds.length; i++){
                 if(i == game1){
                     for (var j=0; j< results.rounds[game1].matches.length; j++){
-                         if(results.rounds[game1].matches[j].team1.name == teamarray[team].name){
+                         if(results.rounds[game1].matches[j].team1.name == team){
                             var homeresult = results.rounds[i].matches[j].score1;
                             var opporesult = results.rounds[i].matches[j].score2;
                             if (homeresult > opporesult) {
@@ -214,7 +221,7 @@ function buildTweet() {
                               game1result = "Loss";
                             }
                          }
-                         else if(results.rounds[game1].matches[j].team2.name == teamarray[team].name){
+                         else if(results.rounds[game1].matches[j].team2.name == team){
                             var homeresult = results.rounds[i].matches[j].score2;
                             var opporesult = results.rounds[i].matches[j].score1;
                             if (homeresult > opporesult) {
@@ -232,7 +239,7 @@ function buildTweet() {
                 }
                 if(i == game2) {
                   for (var j=0; j< results.rounds[game2].matches.length; j++){
-                       if(results.rounds[game2].matches[j].team1.name == teamarray[team].name){
+                       if(results.rounds[game2].matches[j].team1.name == team){
                           var homeresult = results.rounds[i].matches[j].score1;
                           var opporesult = results.rounds[i].matches[j].score2;
                           if (homeresult > opporesult) {
@@ -246,7 +253,7 @@ function buildTweet() {
                             game2result = "Loss";
                           }
                        }
-                       else if(results.rounds[game2].matches[j].team2.name == teamarray[team].name){
+                       else if(results.rounds[game2].matches[j].team2.name == team){
                           var homeresult = results.rounds[i].matches[j].score2;
                           var opporesult = results.rounds[i].matches[j].score1;
                           if (homeresult > opporesult) {
@@ -266,7 +273,7 @@ function buildTweet() {
                 }
                 if(i == game3){
                   for (var j=0; j< results.rounds[game3].matches.length; j++){
-                       if(results.rounds[game3].matches[j].team1.name == teamarray[team].name){
+                       if(results.rounds[game3].matches[j].team1.name == team){
                           var homeresult = results.rounds[i].matches[j].score1;
                           var opporesult = results.rounds[i].matches[j].score2;
                           if (homeresult > opporesult) {
@@ -282,7 +289,7 @@ function buildTweet() {
                             game3result = "Loss";
                           }
                        }
-                       else if(results.rounds[game3].matches[j].team2.name == teamarray[team].name){
+                       else if(results.rounds[game3].matches[j].team2.name == team){
                           var homeresult = results.rounds[i].matches[j].score2;
                           var opporesult = results.rounds[i].matches[j].score1;
                           if (homeresult > opporesult) {

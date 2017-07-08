@@ -1,10 +1,10 @@
 body{
-	margin:1em auto;
-	max-width:40em;
-	padding:0 .62em;
-	font:1.2em/1.62 sans-serif;
-  font-family: 'Montserrat', sans-serif;
-  background: #6534ff;
+	margin:0em auto;
+	max-width:100%;
+	padding:0em;
+	font:1.2em/1.62 monospace;
+  font-family: 'Inconsolata', monospace;
+	background: #282b2f;
   color: #fff;
 }
 
@@ -20,24 +20,27 @@ h1,h2,h3 {
 }
 
 #title {
-  text-align: center;
-  font-size: 66px;
+  text-align: left;
+  font-size: 1.5vw;
+	margin-top: 20px;
+	margin-left: 20px;
   font-weight: 600;
+	color: #fff;
+  font-family: 'Source Code Pro', monospace;
+}
+
+#footer {
+	position: absolute;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	text-align: center;
+	color: #656565;
+	font-size: 0.75vw;
 }
 
 #comingsoon {
   text-align: center;
-}
-
-.container {
-  background: #fff;
-  color: #000;
-  font-weight: 400;
-  font-size: 16px;
-  text-align: center;
-  padding-top: 10px;
-  padding-bottom: 10px;
-  margin-top: 40px;
 }
 
 h4 {
@@ -50,45 +53,48 @@ button {
 }
 
 .result {
-	display: none;
+	text-align: center;
+	font-size: 4vw;
+	padding-top: 7vw;
+}
+
+.tweet {
+	text-align: center;
+	font-size: 1vw;
 }
 
 .spinner {
-  margin: 10px auto;
-  width: 50px;
+  width: 40px;
   height: 40px;
-  text-align: center;
-  font-size: 10px;
+  margin: 100px auto;
+  background-color: #d17c78;
+
+  border-radius: 100%;
+  -webkit-animation: sk-scaleout 1.0s infinite ease-in-out;
+  animation: sk-scaleout 1.0s infinite ease-in-out;
 }
 
-.spinner > div {
-  background-color: #333;
-  height: 100%;
-  width: 6px;
-  display: inline-block;
-
-  -webkit-animation: sk-stretchdelay 1.2s infinite ease-in-out;
-  animation: sk-stretchdelay 1.2s infinite ease-in-out;
+@-webkit-keyframes sk-scaleout {
+  0% { -webkit-transform: scale(0) }
+  100% {
+    -webkit-transform: scale(1.0);
+    opacity: 0;
+  }
 }
 
-.spinner .rect2 {
-  -webkit-animation-delay: -1.1s;
-  animation-delay: -1.1s;
+@keyframes sk-scaleout {
+  0% {
+    -webkit-transform: scale(0);
+    transform: scale(0);
+  } 100% {
+    -webkit-transform: scale(1.0);
+    transform: scale(1.0);
+    opacity: 0;
+  }
 }
 
-.spinner .rect3 {
-  -webkit-animation-delay: -1.0s;
-  animation-delay: -1.0s;
-}
-
-.spinner .rect4 {
-  -webkit-animation-delay: -0.9s;
-  animation-delay: -0.9s;
-}
-
-.spinner .rect5 {
-  -webkit-animation-delay: -0.8s;
-  animation-delay: -0.8s;
+#resultContainer {
+	display: none;
 }
 
 @-webkit-keyframes sk-stretchdelay {
@@ -104,4 +110,87 @@ button {
     transform: scaleY(1.0);
     -webkit-transform: scaleY(1.0);
   }
+}
+
+#w {
+  display: block;
+  width: 750px;
+  margin: 0 auto;
+  padding-top: 30px;
+}
+
+#content {
+  display: block;
+  width: 100%;
+  background: #fff;
+  padding: 25px 20px;
+  padding-bottom: 35px;
+  -webkit-box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 2px 0px;
+  -moz-box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 2px 0px;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 2px 0px;
+}
+
+#searchfield { display: block; width: 100%; text-align: center; margin-bottom: 35px; }
+
+#searchfield form .biginput {
+	width: 75%;
+	margin: auto;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	padding-left: 15px;
+  color: #d17c78;
+	position: absolute;
+	display: inline-block;
+  box-sizing: border-box;
+  font-weight:normal;
+  font-size: 7vw;
+	font-family: inherit;
+	border-bottom: 2px solid;
+	height: 7vw;
+}
+
+::-webkit-scrollbar {
+  display:none;
+}
+
+::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+  color: #0f1430;
+}
+::-moz-placeholder { /* Firefox 19+ */
+  color: #0f1430;
+}
+:-ms-input-placeholder { /* IE 10+ */
+  color: #0f1430;
+}
+:-moz-placeholder { /* Firefox 18- */
+  color: #0f1430;
+}
+
+#searchfield form .biginput:focus {
+  color: #d17c78;
+}
+
+.autocomplete-suggestions {
+	color: #fff;
+	border: 1px solid #999;
+	background: #0f1430;
+	cursor: default;
+	overflow: auto;
+}
+.autocomplete-suggestion {
+	color: #fff;
+	padding: 10px 5px;
+	font-size: 1.2em;
+	white-space: nowrap;
+	overflow: hidden;
+}
+.autocomplete-selected {
+	color: #fff;
+	background: #22295f;
+}
+.autocomplete-suggestions strong {
+	font-weight: normal;
+	color: #d17c78;
 }
