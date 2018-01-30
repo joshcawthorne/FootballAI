@@ -13,4 +13,4 @@ A smart AI for creating football-based tweets dependent on team form, score and 
 - Visualised graphs for each team leading to a 'Financial Times' type overview for each team as a type of security...
 
 # Live Demo: 
-  https://joshcawthorne.github.io/FootballAI/
+  Currently Unavailable.
