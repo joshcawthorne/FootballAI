@@ -1,5 +1,5 @@
-# FootballAI
-A smart AI for creating football-based tweets dependent on team form, score and more.
+# FootballAI*
+A smart (Not)AI for creating football-based tweets dependent on team form, score and more.
 
 # Features currently in build:
 - Pull Scores from API
@@ -14,3 +14,5 @@ A smart AI for creating football-based tweets dependent on team form, score and 
 
 # Live Demo: 
   Currently Unavailable.
+
+*(1): AI is just a fancy term for IF statements.
